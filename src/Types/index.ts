@@ -19,10 +19,11 @@ export interface ScryfallCard {
     };
     mana_cost: string;
     cmc: number;
-    power: string;
-    toughness: string;
+    power?: string;
+    toughness?: string;
     type_line: string;
     oracle_text: string;
+    flavor_text?: string;
     colors: string[];
     color_identity: string[];
     set: string;

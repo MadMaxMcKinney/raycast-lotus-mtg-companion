@@ -1,5 +1,5 @@
 import { Action } from "@raycast/api";
-import { ScryfallCard } from "../Types";
+import { ScryfallCard } from "../../types";
 
 export function SharedCardActions({ card }: { card: ScryfallCard }) {
     return (

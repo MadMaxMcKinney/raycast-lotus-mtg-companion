@@ -1,4 +1,4 @@
-import { Mana, ScryfallCard } from "../Types";
+import { Mana, ScryfallCard } from "../types";
 
 export function getCardImage(card: ScryfallCard) {
     if (card.image_uris) {
@@ -32,7 +32,7 @@ export function getMana(card: ScryfallCard) {
                     manaList.push({ color: "#5DC553", symbol: "G" });
                     break;
                 default:
-                    manaList.push({ color: "#C5BEBB", symbol: match[1] });
+                    manaList.push({ color: "raycast-primary-text", symbol: match[1] });
                     break;
             }
         }
@@ -40,4 +40,23 @@ export function getMana(card: ScryfallCard) {
         return null;
     }
     return manaList;
+}
+
+export function formatRarityName(card: ScryfallCard) {
+    return card.rarity.charAt(0).toUpperCase() + card.rarity.slice(1);
+}
+
+export function getRarityColor(card: ScryfallCard) {
+    switch (card.rarity.toLowerCase()) {
+        case "common":
+            return "raycast-primary-text";
+        case "uncommon":
+            return "#AACADA";
+        case "rare":
+            return "#E2CE96";
+        case "mythic":
+            return "#DB7B3B";
+        default:
+            return "raycast-primary-text";
+    }
 }
