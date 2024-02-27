@@ -8,7 +8,7 @@ import { getCardImage } from "./util";
 import { CardDetail } from "./components/Details/CardDetail";
 import { SharedCardActions } from "./components/Actions";
 
-export default function Command() {
+export default function CommandSearchCards() {
     const [searchText, setSearchText] = useState("");
     const [recentSearchedCards, setRecentSearchedCards] = useState<ScryfallCard[]>([]);
     const [gridSize, setGridSize] = useState(4);
@@ -39,6 +39,7 @@ export default function Command() {
     const gridSizes = [3, 4, 5];
 
     function addRecentSearchedCard(card: ScryfallCard) {
+        // TODO: Recent cards should not add duplicates
         // Add the card to the recent searched cards, and make sure we only keep the last 15 cards
         const newRecentSearchedCards = [card, ...recentSearchedCards.slice(0, 13)];
 
@@ -96,9 +97,9 @@ export default function Command() {
             {!isLoading && searchText.length === 0 && recentSearchedCards.length > 0 && (
                 <>
                     <Grid.Section title="Recently searched cards">
-                        {recentSearchedCards.map((card) => (
+                        {recentSearchedCards.map((card, index) => (
                             <Grid.Item
-                                key={card.id}
+                                key={index}
                                 title={card.name}
                                 subtitle={card.set_name}
                                 content={{ source: getCardImage(card), fallback: Icon.Wand }}

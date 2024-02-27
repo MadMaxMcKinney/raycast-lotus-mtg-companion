@@ -32,6 +32,8 @@ export interface ScryfallCard {
     collector_number: string;
     rarity: string;
     artist: string;
+    set_uri: string;
+    rulings_uri: string;
     prices: {
         usd: string;
         usd_foil: string;

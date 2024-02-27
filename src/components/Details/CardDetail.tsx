@@ -2,24 +2,46 @@ import { ActionPanel, Detail, Color } from "@raycast/api";
 import { ScryfallCard } from "../../types";
 import { formatRarityName, getCardImage, getMana, getRarityColor } from "../../util";
 import { SharedCardActions } from "../Actions";
+import { useFetch } from "@raycast/utils";
+
+interface ScryfallSet {
+    icon_svg_uri: string;
+}
+
+interface ScryfallRulings {
+    hasMore: boolean;
+    data: [
+        {
+            published_at: string;
+            comment: string;
+        },
+    ];
+}
 
 interface CardDetailProps {
     card: ScryfallCard;
+    isLoading?: boolean;
 }
 
-export function CardDetail({ card }: CardDetailProps) {
+export function CardDetail({ card, isLoading = false }: CardDetailProps) {
+    const cardSetIcon = useFetch<ScryfallSet>(card.set_uri).data;
+    const cardRulings = useFetch<ScryfallRulings>(card.rulings_uri).data;
+
     const markdown = `
 ![](${getCardImage(card)}?raycast-width=350&raycast-height=300)
 
 ${card.oracle_text}
 
 ${card.flavor_text ? `*${card.flavor_text}*` : ""}
+
+${cardRulings && cardRulings.data.length > 0 ? `### Rulings\n\n ${cardRulings.data.map((ruling) => `${ruling.comment} \n\n`)}` : ""}
 `;
 
     return (
         <Detail
             markdown={markdown}
             navigationTitle={card.name}
+            isLoading={isLoading}
             metadata={
                 <Detail.Metadata>
                     {/* Card info */}
@@ -31,9 +53,19 @@ ${card.flavor_text ? `*${card.flavor_text}*` : ""}
                         ))}
                     </Detail.Metadata.TagList>
                     <Detail.Metadata.Label title="CMC" text={card.cmc.toString()} />
-                    {card.power && <Detail.Metadata.Label title="Power" text={card.power} icon={"sword.png"} />}
+                    {card.power && (
+                        <Detail.Metadata.Label
+                            title="Power"
+                            text={card.power}
+                            icon={{ source: "sword.png", tintColor: Color.PrimaryText }}
+                        />
+                    )}
                     {card.toughness && (
-                        <Detail.Metadata.Label title="Toughness" text={card.toughness} icon={"shield.png"} />
+                        <Detail.Metadata.Label
+                            title="Toughness"
+                            text={card.toughness}
+                            icon={{ source: "shield.png", tintColor: Color.PrimaryText }}
+                        />
                     )}
                     {card.keywords.length > 0 && (
                         <>
@@ -51,11 +83,15 @@ ${card.flavor_text ? `*${card.flavor_text}*` : ""}
                     )}
                     {/* Misc info */}
                     <Detail.Metadata.Separator />
-                    <Detail.Metadata.Label title="Set" text={card.set_name} />
-                    <Detail.Metadata.Label title="Collector Number" text={card.collector_number} />
+                    <Detail.Metadata.Label
+                        title="Set"
+                        text={card.set_name}
+                        icon={{ source: cardSetIcon ? cardSetIcon.icon_svg_uri : "", tintColor: Color.PrimaryText }}
+                    />
                     <Detail.Metadata.TagList title="Rarity">
                         <Detail.Metadata.TagList.Item text={formatRarityName(card)} color={getRarityColor(card)} />
                     </Detail.Metadata.TagList>
+                    <Detail.Metadata.Label title="Collector Number" text={card.collector_number} />
                     {/* Price info */}
                     <Detail.Metadata.Separator />
                     <Detail.Metadata.TagList title="Prices">

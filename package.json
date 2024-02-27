@@ -16,6 +16,12 @@
             "title": "Search Cards",
             "description": "Search for Magic The Gathering cards, supports Scryfall syntax.",
             "mode": "view"
+        },
+        {
+            "name": "randomCard",
+            "title": "View Random Card",
+            "description": "View a random Magic The Gathering card.",
+            "mode": "view"
         }
     ],
     "dependencies": {
