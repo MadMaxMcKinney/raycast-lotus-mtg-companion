@@ -131,7 +131,7 @@ export default function CommandSearchCards({ launchContext }: { launchContext?: 
                                 actions={
                                     <ActionPanel>
                                         <Action
-                                            title="View More"
+                                            title="View Card Details"
                                             icon={Icon.ArrowsExpand}
                                             onAction={() => {
                                                 addRecentSearchedCard(card);

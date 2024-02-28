@@ -24,7 +24,7 @@ export default function CommandSearchCards() {
                         subtitle={`${set.card_count.toString()} cards`}
                         accessories={[
                             { tag: { color: Color.Red, value: `Code: ${set.code}` }, icon: Icon.Hashtag },
-                            { tag: `${set.released_at}`, icon: Icon.Calendar },
+                            { tag: `Release: ${set.released_at}`, icon: Icon.Calendar },
                         ]}
                         actions={
                             <ActionPanel>
