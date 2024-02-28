@@ -1,6 +1,6 @@
 {
     "$schema": "https://www.raycast.com/schemas/extension.json",
-    "name": "mtg-companion",
+    "name": "lotus-mtg-companion",
     "title": "Lotus - MTG Companion",
     "description": "A non-official tool to easily search for Magic The Gathering cards, sets, and rules - powered by Scryfall search.",
     "icon": "lotus-mtg-companion-extension-icon.png",
