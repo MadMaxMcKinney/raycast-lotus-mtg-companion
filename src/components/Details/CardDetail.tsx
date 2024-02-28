@@ -1,22 +1,8 @@
 import { ActionPanel, Detail, Color } from "@raycast/api";
-import { ScryfallCard } from "../../types";
+import { ScryfallCard, ScryfallRulings, ScryfallSet } from "../../types";
 import { formatRarityName, getCardImage, getMana, getRarityColor } from "../../util";
 import { SharedCardActions } from "../Actions";
 import { useFetch } from "@raycast/utils";
-
-interface ScryfallSet {
-    icon_svg_uri: string;
-}
-
-interface ScryfallRulings {
-    hasMore: boolean;
-    data: [
-        {
-            published_at: string;
-            comment: string;
-        },
-    ];
-}
 
 interface CardDetailProps {
     card: ScryfallCard;
@@ -34,7 +20,7 @@ ${card.oracle_text}
 
 ${card.flavor_text ? `*${card.flavor_text}*` : ""}
 
-${cardRulings && cardRulings.data.length > 0 ? `### Rulings\n\n ${cardRulings.data.map((ruling) => `${ruling.comment} \n\n`)}` : ""}
+${cardRulings && cardRulings.data.length > 0 ? `### Rulings\n\n ${cardRulings.data.map((ruling) => `*${ruling.published_at}* — ${ruling.comment} \n\n`).join("")}` : ""}
 `;
 
     return (
@@ -93,14 +79,23 @@ ${cardRulings && cardRulings.data.length > 0 ? `### Rulings\n\n ${cardRulings.da
                     </Detail.Metadata.TagList>
                     <Detail.Metadata.Label title="Collector Number" text={card.collector_number} />
                     {/* Price info */}
-                    <Detail.Metadata.Separator />
-                    <Detail.Metadata.TagList title="Prices">
-                        <Detail.Metadata.TagList.Item text={`$${card.prices.usd}`} color={"raycast-primary-text"} />
-                        <Detail.Metadata.TagList.Item
-                            text={`Foil: $${card.prices.usd_foil}`}
-                            color={"raycast-primary-text"}
-                        />
-                    </Detail.Metadata.TagList>
+                    {card.prices.usd && (
+                        <>
+                            <Detail.Metadata.Separator />
+                            <Detail.Metadata.TagList title="Prices">
+                                <Detail.Metadata.TagList.Item
+                                    text={`$${card.prices.usd}`}
+                                    color={"raycast-primary-text"}
+                                />
+                                {card.prices.usd_foil && (
+                                    <Detail.Metadata.TagList.Item
+                                        text={`Foil: $${card.prices.usd_foil}`}
+                                        color={"raycast-primary-text"}
+                                    />
+                                )}
+                            </Detail.Metadata.TagList>
+                        </>
+                    )}
                     {/* Artist */}
                     <Detail.Metadata.Separator />
                     <Detail.Metadata.Label title="Artist" text={card.artist} />

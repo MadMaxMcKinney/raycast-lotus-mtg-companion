@@ -41,6 +41,20 @@ export interface ScryfallCard {
     card_faces?: ScryfallCard[];
 }
 
+export interface ScryfallSet {
+    icon_svg_uri: string;
+}
+
+export interface ScryfallRulings {
+    hasMore: boolean;
+    data: [
+        {
+            published_at: string;
+            comment: string;
+        },
+    ];
+}
+
 export interface Mana {
     color: string;
     symbol: string;

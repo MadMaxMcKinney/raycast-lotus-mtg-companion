@@ -39,9 +39,15 @@ export default function CommandSearchCards() {
     const gridSizes = [3, 4, 5];
 
     function addRecentSearchedCard(card: ScryfallCard) {
-        // TODO: Recent cards should not add duplicates
-        // Add the card to the recent searched cards, and make sure we only keep the last 15 cards
-        const newRecentSearchedCards = [card, ...recentSearchedCards.slice(0, 13)];
+        // Add the card to the recent searched cards, and make sure we only keep the last 15 cards. If we already have the card in the list, we don't add it again we just make sure it's at the front.
+        let newRecentSearchedCards: ScryfallCard[] = [];
+
+        if (recentSearchedCards.some((c) => c.id === card.id)) {
+            newRecentSearchedCards = recentSearchedCards.filter((c) => c.id !== card.id);
+            newRecentSearchedCards = [card, ...newRecentSearchedCards.slice(0, 13)];
+        } else {
+            newRecentSearchedCards = [card, ...recentSearchedCards.slice(0, 13)];
+        }
 
         LocalStorage.setItem("recent-searched-cards", JSON.stringify(newRecentSearchedCards));
         setRecentSearchedCards(newRecentSearchedCards);
