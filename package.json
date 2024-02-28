@@ -26,7 +26,7 @@
         {
             "name": "searchSets",
             "title": "Search Sets",
-            "description": "Search and view all MTG sets, and view all cards in a set.",
+            "description": "Search and view all MTG sets, and view all the cards in a set.",
             "mode": "view"
         }
     ],
