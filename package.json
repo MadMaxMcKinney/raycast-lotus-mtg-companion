@@ -14,19 +14,19 @@
         {
             "name": "searchCards",
             "title": "Search Cards",
-            "description": "Search for Magic The Gathering cards, supports Scryfall syntax.",
+            "description": "Search for MTG cards, supports Scryfall syntax.",
             "mode": "view"
         },
         {
             "name": "viewRandomCard",
             "title": "View Random Card",
-            "description": "View a random Magic The Gathering card.",
+            "description": "View a random MTG card.",
             "mode": "view"
         },
         {
             "name": "searchSets",
             "title": "Search Sets",
-            "description": "View a random Magic The Gathering card.",
+            "description": "Search and view all MTG sets, and view all cards in a set.",
             "mode": "view"
         }
     ],
