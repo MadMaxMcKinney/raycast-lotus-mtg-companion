@@ -1,6 +1,6 @@
 import { ActionPanel, Detail, Color } from "@raycast/api";
 import { ScryfallCard, ScryfallRulings, ScryfallSet } from "../../types";
-import { formatRarityName, getCardImage, getMana, getRarityColor } from "../../util";
+import { formatRarityName, getCardImage, getMana, getProducedMana, getRarityColor } from "../../util";
 import { SharedCardActions } from "../Actions";
 import { useFetch } from "@raycast/utils";
 
@@ -33,11 +33,20 @@ ${cardRulings && cardRulings.data.length > 0 ? `### Rulings\n\n ${cardRulings.da
                     {/* Card info */}
                     <Detail.Metadata.Label title="Name" text={card.name} />
                     <Detail.Metadata.Label title="Type" text={card.type_line} />
-                    <Detail.Metadata.TagList title="Mana">
-                        {getMana(card)?.map((mana, index) => (
-                            <Detail.Metadata.TagList.Item text={mana.symbol} color={mana.color} key={index} />
-                        ))}
-                    </Detail.Metadata.TagList>
+                    {card.mana_cost.length > 0 && (
+                        <Detail.Metadata.TagList title="Mana">
+                            {getMana(card)?.map((mana, index) => (
+                                <Detail.Metadata.TagList.Item text={mana.symbol} color={mana.color} key={index} />
+                            ))}
+                        </Detail.Metadata.TagList>
+                    )}
+                    {card.produced_mana && (
+                        <Detail.Metadata.TagList title="Produced Mana">
+                            {getProducedMana(card)?.map((mana, index) => (
+                                <Detail.Metadata.TagList.Item text={mana.symbol} color={mana.color} key={index} />
+                            ))}
+                        </Detail.Metadata.TagList>
+                    )}
                     <Detail.Metadata.Label title="CMC" text={card.cmc.toString()} />
                     {card.power && (
                         <Detail.Metadata.Label

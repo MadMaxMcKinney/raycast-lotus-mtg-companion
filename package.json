@@ -18,8 +18,14 @@
             "mode": "view"
         },
         {
-            "name": "randomCard",
+            "name": "viewRandomCard",
             "title": "View Random Card",
+            "description": "View a random Magic The Gathering card.",
+            "mode": "view"
+        },
+        {
+            "name": "searchSets",
+            "title": "Search Sets",
             "description": "View a random Magic The Gathering card.",
             "mode": "view"
         }

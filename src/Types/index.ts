@@ -18,6 +18,7 @@ export interface ScryfallCard {
         border_crop: string;
     };
     mana_cost: string;
+    produced_mana?: string[];
     cmc: number;
     power?: string;
     toughness?: string;
@@ -39,6 +40,26 @@ export interface ScryfallCard {
         usd_foil: string;
     };
     card_faces?: ScryfallCard[];
+}
+
+export interface ScryfallSetQuery {
+    has_more: boolean;
+    data: ScryfallSet[];
+}
+
+export interface ScryfallSet {
+    object: string;
+    id: string;
+    code: string;
+    name: string;
+    uri: string;
+    scryfall_uri: string;
+    search_uri: string;
+    released_at: string;
+    set_type: string;
+    card_count: number;
+    digital: boolean;
+    icon_svg_uri: string;
 }
 
 export interface ScryfallSet {

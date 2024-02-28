@@ -1,27 +1,43 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useEffect, useState } from "react";
-import { Grid, Icon, Action, ActionPanel, useNavigation, LocalStorage } from "@raycast/api";
+import {
+    Grid,
+    Icon,
+    Action,
+    ActionPanel,
+    useNavigation,
+    LocalStorage,
+    environment,
+    Toast,
+    showToast,
+} from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 import { ScryfallCard, ScryfallCardQuery } from "./types";
 import { getCardImage } from "./util";
 import { CardDetail } from "./components/Details/CardDetail";
 import { SharedCardActions } from "./components/Actions";
 
-export default function CommandSearchCards() {
+export default function CommandSearchCards({ launchContext }: { launchContext?: { data: string } }) {
     const [searchText, setSearchText] = useState("");
     const [recentSearchedCards, setRecentSearchedCards] = useState<ScryfallCard[]>([]);
     const [gridSize, setGridSize] = useState(4);
     const { isLoading, data } = useFetch<ScryfallCardQuery>(`https://api.scryfall.com/cards/search?q=${searchText}`, {
         // to make sure the screen isn't flickering when the searchText changes
         keepPreviousData: true,
-        onError: (error) => console.error("Failed to fetch data:", error),
+        onError: (error) => {
+            showToast({
+                title: "Nothing found",
+                message: "Couldn't find cards or something went wrong.",
+                style: Toast.Style.Failure,
+            });
+        },
         // to make we don't send a request when the searchText is empty
         execute: searchText !== "",
     });
     const { push } = useNavigation();
 
-    // Load recent searched cards from local storage
+    // Load recent searched cards from local storage and set the search text if we have a launch context, like coming from a another command
     useEffect(() => {
         (async () => {
             try {
@@ -34,6 +50,9 @@ export default function CommandSearchCards() {
                 console.error("Error:", error);
             }
         })();
+        if (launchContext?.data) {
+            setSearchText(`${launchContext.data}`);
+        }
     }, []);
 
     const gridSizes = [3, 4, 5];
@@ -88,7 +107,7 @@ export default function CommandSearchCards() {
                         actions={
                             <ActionPanel>
                                 <Action
-                                    title="View More"
+                                    title="View Card Details"
                                     icon={Icon.ArrowsExpand}
                                     onAction={() => {
                                         addRecentSearchedCard(card);

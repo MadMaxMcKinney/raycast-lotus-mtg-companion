@@ -15,31 +15,18 @@ export function getMana(card: ScryfallCard) {
     if (card.mana_cost) {
         for (const match of card.mana_cost.matchAll(/{(.)}/g)) {
             // match[0] is the full match, match[1] is the first group which is the mana value
-            switch (match[1]) {
-                case "W":
-                    manaList.push({ color: "#F5CF76", symbol: "W" });
-                    break;
-                case "U":
-                    manaList.push({ color: "#4490C3", symbol: "U" });
-                    break;
-                case "B":
-                    manaList.push({ color: "Black", symbol: "B" });
-                    break;
-                case "R":
-                    manaList.push({ color: "#ED5F67", symbol: "R" });
-                    break;
-                case "G":
-                    manaList.push({ color: "#5DC553", symbol: "G" });
-                    break;
-                default:
-                    manaList.push({ color: "raycast-primary-text", symbol: match[1] });
-                    break;
-            }
+            manaList.push(getFormattedMana(match[1]));
         }
     } else {
         return null;
     }
     return manaList;
+}
+
+export function getProducedMana(card: ScryfallCard) {
+    const producedMana: Mana[] = [];
+    card.produced_mana?.map((mana) => producedMana.push(getFormattedMana(mana)));
+    return producedMana;
 }
 
 export function formatRarityName(card: ScryfallCard) {
@@ -58,5 +45,22 @@ export function getRarityColor(card: ScryfallCard) {
             return "#DB7B3B";
         default:
             return "raycast-primary-text";
+    }
+}
+
+function getFormattedMana(mana: string) {
+    switch (mana) {
+        case "W":
+            return { color: "#F5CF76", symbol: "W" };
+        case "U":
+            return { color: "#4490C3", symbol: "U" };
+        case "B":
+            return { color: "Black", symbol: "B" };
+        case "R":
+            return { color: "#ED5F67", symbol: "R" };
+        case "G":
+            return { color: "#5DC553", symbol: "G" };
+        default:
+            return { color: "raycast-primary-text", symbol: mana };
     }
 }
